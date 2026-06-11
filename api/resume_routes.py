@@ -1,36 +1,53 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint
+from flask import request
+from flask import jsonify
 
-from core.resume.resume_analyzer import ResumeAnalyzer
+import os
+
+from core.resume.resume_service import ResumeService
 
 resume_bp = Blueprint(
     "resume",
     __name__
 )
 
-analyzer = ResumeAnalyzer()
+resume_service = ResumeService()
+
+UPLOAD_FOLDER = "uploads"
 
 
 @resume_bp.route(
-    "/resume/analyze",
+    "/resume/upload",
     methods=["POST"]
 )
-def analyze_resume():
+def upload_resume():
 
     try:
 
-        data = request.json
+        if "file" not in request.files:
 
-        resume_text = data.get(
-            "resume_text"
+            return jsonify({
+                "success": False,
+                "message": "No file uploaded"
+            }), 400
+
+        file = request.files["file"]
+
+        file_path = os.path.join(
+            UPLOAD_FOLDER,
+            file.filename
         )
 
-        result = analyzer.analyze(
-            resume_text
+        file.save(file_path)
+
+        analysis = resume_service.analyze_resume(
+            file_path
         )
 
         return jsonify({
             "success": True,
-            "analysis": result
+            "filename": file.filename,
+            "analysis": analysis
         })
 
     except Exception as e:
