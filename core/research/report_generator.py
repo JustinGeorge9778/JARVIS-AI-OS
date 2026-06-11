@@ -5,14 +5,20 @@ gemini = GeminiClient()
 
 class ReportGenerator:
 
-    def generate_report(self, topic):
+    def generate_report(
+        self,
+        topic,
+        sources
+    ):
 
         prompt = f"""
-        Create a professional research report about:
-
+        Topic:
         {topic}
 
-        Format:
+        Sources:
+        {sources}
+
+        Generate:
 
         Executive Summary
 

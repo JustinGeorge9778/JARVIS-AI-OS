@@ -1,28 +1,44 @@
 from flask import Blueprint, request, jsonify
 
-from core.research.report_generator import ReportGenerator
+from core.research.research_service import ResearchService
 
 research_bp = Blueprint(
     "research",
     __name__
 )
 
-report_generator = ReportGenerator()
+research_service = ResearchService()
 
 
 @research_bp.route("/research", methods=["POST"])
 def research():
 
-    data = request.json
+    try:
 
-    topic = data.get("topic")
+        data = request.json
 
-    report = report_generator.generate_report(
-        topic
-    )
+        topic = data.get("topic")
 
-    return jsonify({
-        "success": True,
-        "topic": topic,
-        "report": report
-    })
+        if not topic:
+            return jsonify({
+                "success": False,
+                "message": "Topic is required"
+            }), 400
+
+        result = research_service.research(
+            topic
+        )
+
+        return jsonify({
+            "success": True,
+            "topic": result["topic"],
+            "sources": result["sources"],
+            "report": result["report"]
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        }), 500

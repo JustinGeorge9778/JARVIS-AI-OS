@@ -1,6 +1,6 @@
 from google import genai
 from config.config import Config
-
+import time
 
 class GeminiClient:
 
@@ -11,9 +11,24 @@ class GeminiClient:
 
     def ask(self, prompt):
 
-        response = self.client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt
-        )
+        retries = 3
 
-        return response.text
+        for attempt in range(retries):
+
+            try:
+
+                response = self.client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=prompt
+                )
+
+                return response.text
+
+            except Exception as e:
+
+                print(f"Attempt {attempt+1} failed")
+
+                if attempt < retries - 1:
+                    time.sleep(5)
+                else:
+                    raise e
