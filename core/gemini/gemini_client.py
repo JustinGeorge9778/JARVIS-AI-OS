@@ -32,3 +32,11 @@ class GeminiClient:
                     time.sleep(5)
                 else:
                     raise e
+    def research(self, prompt):
+
+        response = self.client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
+
+        return response.text           
