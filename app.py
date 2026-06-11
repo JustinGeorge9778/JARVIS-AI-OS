@@ -3,6 +3,7 @@ from api.research_routes import research_bp
 from api.chat_routes import chat_bp
 from flask import jsonify
 from api.rag_routes import rag_bp
+from api.resume_routes import resume_bp
 
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
@@ -16,6 +17,10 @@ app.register_blueprint(
 )
 app.register_blueprint(
     research_bp,
+    url_prefix="/api"
+)
+app.register_blueprint(
+    resume_bp,
     url_prefix="/api"
 )
 @app.route("/health")
