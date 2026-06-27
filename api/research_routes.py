@@ -25,16 +25,9 @@ def research():
                 "message": "Topic is required"
             }), 400
 
-        result = research_service.research(
-            topic
-        )
+        result = research_service.research(topic)
 
-        return jsonify({
-            "success": True,
-            "topic": result["topic"],
-            "sources": result["sources"],
-            "report": result["report"]
-        })
+        return jsonify(result)
 
     except Exception as e:
 

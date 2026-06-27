@@ -12,3 +12,5 @@ class Config:
     MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
 
     SECRET_KEY = os.getenv("SECRET_KEY")
+    TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
+    

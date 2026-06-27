@@ -54,5 +54,6 @@ def upload_resume():
 
         return jsonify({
             "success": False,
+            "error_type": type(e).__name__,
             "message": str(e)
         }), 500

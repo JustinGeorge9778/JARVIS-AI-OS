@@ -1,32 +1,15 @@
-from core.gemini.gemini_client import GeminiClient
-
-gemini = GeminiClient()
-
-
 class ReportGenerator:
 
-    def generate_report(
+    def generate(
         self,
         topic,
+        analysis,
         sources
     ):
 
-        prompt = f"""
-        Topic:
-        {topic}
-
-        Sources:
-        {sources}
-
-        Generate:
-
-        Executive Summary
-
-        Key Findings
-
-        Recommendations
-
-        Conclusion
-        """
-
-        return gemini.ask(prompt)
+        return {
+            "success": True,
+            "topic": topic,
+            "analysis": analysis,
+            "sources": sources
+        }

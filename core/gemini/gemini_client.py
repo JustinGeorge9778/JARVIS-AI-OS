@@ -11,7 +11,7 @@ class GeminiClient:
 
     def ask(self, prompt):
 
-        retries = 3
+        retries = 5
 
         for attempt in range(retries):
 
@@ -29,7 +29,7 @@ class GeminiClient:
                 print(f"Attempt {attempt+1} failed")
 
                 if attempt < retries - 1:
-                    time.sleep(5)
+                    time.sleep(10)
                 else:
                     raise e
     def research(self, prompt):

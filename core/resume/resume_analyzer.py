@@ -1,5 +1,5 @@
 from core.gemini.gemini_client import GeminiClient
-
+import json
 
 class ResumeAnalyzer:
 
@@ -9,21 +9,33 @@ class ResumeAnalyzer:
     def analyze(self, resume_text):
 
         prompt = f"""
-        Analyze the following resume.
+        Analyze the resume below.
 
         Resume:
         {resume_text}
 
-        Give:
+        Return ONLY valid JSON.
 
-        1. ATS Score (0-100)
-        2. Strengths
-        3. Weaknesses
-        4. Missing Skills
-        5. Placement Readiness
-        6. Improvement Suggestions
+        Format:
 
-        Format the response clearly.
+        {{
+            "ats_score": 0,
+            "strengths": [],
+            "weaknesses": [],
+            "missing_skills": [],
+            "placement_readiness": "",
+            "recommendations": []
+        }}
         """
+        result = self.gemini.ask(prompt)
 
-        return self.gemini.ask(prompt)
+        result = result.replace("```json", "")
+        result = result.replace("```", "")
+        result = result.strip()
+
+        try:
+            result = json.loads(result)
+        except:
+            pass
+
+        return result
